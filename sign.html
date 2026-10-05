@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MaeLowo Foods | Sign In</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="auth-body">
+    <div class="auth-shell">
+      <div class="auth-card">
+        <div class="auth-branding">
+          <img src="logo.jpeg" alt="MaeLowo Foods logo" class="auth-logo" />
+          <p>From Soil to Your Table</p>
+        </div>
+
+        <div class="auth-panel">
+          <div class="tab-buttons" aria-label="Authentication tabs">
+            <button class="tab-btn active" data-tab="login" type="button">Sign in</button>
+            <button class="tab-btn" data-tab="signup" type="button">Create account</button>
+          </div>
+
+          <form class="auth-form active" id="login-form">
+            <div class="field">
+              <label for="login-email">Email or phone</label>
+              <input id="login-email" type="text" placeholder="you@example.com" />
+            </div>
+            <div class="field">
+              <label for="login-password">Password</label>
+              <input id="login-password" type="password" placeholder="••••••••" />
+            </div>
+            <div class="helper-row">
+              <label class="checkbox-row"><input type="checkbox" checked /> <span>Remember me</span></label>
+              <a href="#">Forgot password?</a>
+            </div>
+            <button class="primary auth-btn" type="submit">Sign in</button>
+          </form>
+
+          <form class="auth-form" id="signup-form">
+            <div class="field-grid">
+              <div class="field">
+                <label for="first-name">First name</label>
+                <input id="first-name" type="text" placeholder="Jane" />
+              </div>
+              <div class="field">
+                <label for="last-name">Last name</label>
+                <input id="last-name" type="text" placeholder="Doe" />
+              </div>
+            </div>
+            <div class="field">
+              <label for="signup-email">Email</label>
+              <input id="signup-email" type="email" placeholder="you@example.com" />
+            </div>
+            <div class="field">
+              <label for="signup-phone">Phone</label>
+              <input id="signup-phone" type="tel" placeholder="+254 7xx xxx xxx" />
+            </div>
+            <div class="field">
+              <label for="signup-password">Password</label>
+              <input id="signup-password" type="password" placeholder="Create a password" />
+            </div>
+            <button class="primary auth-btn" type="submit">Create account</button>
+          </form>
+
+          <p class="auth-footer">Need help? <a href="index.html">Return home</a></p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const tabButtons = document.querySelectorAll('.tab-btn');
+      const forms = document.querySelectorAll('.auth-form');
+
+      tabButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          tabButtons.forEach((btn) => btn.classList.toggle('active', btn === button));
+          const target = button.dataset.tab;
+          forms.forEach((form) => {
+            form.classList.toggle('active', form.id === `${target}-form`);
+          });
+        });
+      });
+
+      document.querySelectorAll('.auth-form').forEach((form) => {
+        form.addEventListener('submit', (event) => {
+          event.preventDefault();
+          window.location.href = 'payment.html';
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,351 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MaeLowo Foods</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <div class="brand" aria-label="MaeLowo Foods logo">
+          <img src="logo.jpeg" alt="MaeLowo Foods logo" class="brand-mark" />
+        </div>
+
+        <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+
+        <nav class="main-nav" aria-label="Main navigation">
+          <a href="#" class="active">Home</a>
+          <a href="#about">About Us</a>
+          <a href="#products">Products</a>
+          <a href="#impact">Our Impact</a>
+          <a href="#contact">Contact</a>
+        </nav>
+
+        <div class="nav-actions">
+          <button class="icon-button" aria-label="Search">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="5.5"></circle><path d="M16 16l5 5"></path></svg>
+          </button>
+          <button class="icon-button cart-button" aria-label="Cart">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="18" r="1.5"></circle><circle cx="17" cy="18" r="1.5"></circle><path d="M3 4h2l2.4 9.2a1 1 0 0 0 1 .8h8.8a1 1 0 0 0 1-.8L20 7H7"></path></svg>
+            <span class="cart-count">0</span>
+          </button>
+          <a href="sign.html" class="cta-button">Shop Now</a>
+        </div>
+      </header>
+
+      <main class="content">
+        <section class="hero">
+          <div class="hero-copy">
+            <div class="micro-tags">
+              <span>QUALITY FOOD</span>
+              <span>SUSTAINABLE SOURCING</span>
+              <span>LOCAL GOODNESS</span>
+            </div>
+
+            <h1>From Soil to<br /><span>Your Table</span></h1>
+
+            <p>
+              At MaeLowo Foods, we bring you wholesome, naturally sourced foods
+              that nourish your family and support local farmers.
+            </p>
+
+            <a class="primary-btn" href="#products">Explore Our Products <span>→</span></a>
+          </div>
+
+          <div class="hero-brand-panel" aria-label="MaeLowo brand panel">
+            <img src="logo.jpeg" alt="MaeLowo Foods logo" class="hero-mark" />
+
+            <div class="brand-divider">
+              <span>From Soil to Your Table</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="showcase" aria-label="MaeLowo product showcase">
+          <div class="showcase-card showcase-main">
+            <img src="assets/images/peanut-poster.jpeg" alt="MaeLowo peanut butter product poster" />
+          </div>
+          <div class="showcase-card showcase-side">
+            <img src="assets/images/merch-set.jpeg" alt="MaeLowo branded merchandise" />
+          </div>
+          <div class="showcase-card showcase-side alt">
+            <img src="assets/images/tshirt-mockup.jpeg" alt="MaeLowo t-shirt mockup" />
+          </div>
+          <div class="showcase-card showcase-banner">
+            <img src="assets/images/rollup-banner.jpeg" alt="MaeLowo banner mockup" />
+          </div>
+        </section>
+
+        <section class="products" id="products">
+          <div class="section-header">
+            <span class="rule"></span>
+            <h2>OUR CORE PRODUCTS</h2>
+            <span class="rule"></span>
+          </div>
+
+          <div class="product-grid product-choices">
+            <article class="product-item product-card" data-name="Peanut Butter" data-price="1200">
+              <div class="product-icon peanut">
+                <svg viewBox="0 0 120 120" aria-hidden="true">
+                  <path d="M60 26c22 0 38 15 38 35 0 18-16 32-38 32-22 0-38-14-38-32 0-20 16-35 38-35Zm-3 9c-13 0-23 9-23 20 0 13 10 23 25 23 16 0 28-10 28-24 0-15-12-19-30-19Z"></path>
+                  <path d="M52 42c9 1 17 8 21 16"></path>
+                </svg>
+              </div>
+              <h3>Peanut Butter</h3>
+              <p>NATURAL <span>•</span> NUTRITIOUS</p>
+              <div class="price-row"><span>KSh 1,200</span></div>
+              <button class="buy-btn" type="button">Add to cart</button>
+            </article>
+
+            <article class="product-item product-card" data-name="Hibiscus Tea" data-price="900">
+              <div class="product-icon hibiscus">
+                <svg viewBox="0 0 120 120" aria-hidden="true">
+                  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="60" cy="58" r="16"></circle>
+                    <path d="M60 42V21M60 94v17M42 58H20M100 58h-22M48 48 32 32M88 48l16-16M48 68l-16 16M88 68l16 16"></path>
+                    <path d="M60 82c-7 0-12-5-12-12s5-12 12-12 12 5 12 12-5 12-12 12Z" fill="#f5b6a8"></path>
+                  </g>
+                </svg>
+              </div>
+              <h3>Hibiscus Tea</h3>
+              <p>REFRESHING <span>•</span> RICH IN ANTIOXIDANTS</p>
+              <div class="price-row"><span>KSh 900</span></div>
+              <button class="buy-btn" type="button">Add to cart</button>
+            </article>
+
+            <article class="product-item product-card" data-name="Dried Vegetables" data-price="850">
+              <div class="product-icon vegetables">
+                <svg viewBox="0 0 120 120" aria-hidden="true">
+                  <path d="M28 52c8-19 26-30 48-30 20 0 39 13 42 34-4 24-24 38-49 38-25 0-42-16-41-42Z" fill="#d8e7d8"></path>
+                  <path d="M30 62c8 5 16 6 24 0M48 42c4 10 8 16 15 20M74 36c6 10 9 17 8 29M40 80c10 8 21 11 31 9"></path>
+                </svg>
+              </div>
+              <h3>Dried Vegetables</h3>
+              <p>PURE <span>•</span> NATURAL</p>
+              <div class="price-row"><span>KSh 850</span></div>
+              <button class="buy-btn" type="button">Add to cart</button>
+            </article>
+
+            <article class="product-item product-card" data-name="Honey" data-price="1100">
+              <div class="product-icon honey">
+                <svg viewBox="0 0 120 120" aria-hidden="true">
+                  <path d="M26 54c0-15 12-27 30-27 14 0 23 8 30 16 7 9 11 17 11 31 0 20-13 35-31 35-23 0-40-18-40-55Z" fill="#f2d7b9"></path>
+                  <path d="M44 46c6 6 11 9 17 11 9 2 17 1 24-4"></path>
+                  <path d="M48 70c9 7 19 10 29 10"></path>
+                  <path d="M55 34c-18-3-31 11-29 26"></path>
+                </svg>
+              </div>
+              <h3>Honey</h3>
+              <p>RAW <span>•</span> NATURE'S GOODNESS</p>
+              <div class="price-row"><span>KSh 1,100</span></div>
+              <button class="buy-btn" type="button">Add to cart</button>
+            </article>
+
+            <article class="product-item product-card" data-name="Deep-Fried Fish" data-price="1400">
+              <div class="product-icon fish">
+                <svg viewBox="0 0 120 120" aria-hidden="true">
+                  <path d="M22 60c15-20 28-30 49-30 24 0 31 11 33 19 2 8 0 18-12 27-15 12-30 16-49 16-15 0-22-7-21-32Z" fill="#dfead9"></path>
+                  <path d="M74 41c10 7 17 15 19 26M74 78c10-2 18-10 21-18M27 60h-8"></path>
+                </svg>
+              </div>
+              <h3>Deep-Fried Fish</h3>
+              <p>FRESH <span>•</span> DELICIOUS</p>
+              <div class="price-row"><span>KSh 1,400</span></div>
+              <button class="buy-btn" type="button">Add to cart</button>
+            </article>
+          </div>
+        </section>
+
+        <aside class="cart-panel" id="cart-panel" aria-live="polite">
+          <div class="cart-header">
+            <h3>Your cart</h3>
+            <button class="close-cart" type="button" aria-label="Close cart">×</button>
+          </div>
+          <ul class="cart-items" id="cart-items"></ul>
+          <div class="cart-summary">
+            <div class="summary-row"><span>Subtotal</span><strong id="subtotal">KSh 0</strong></div>
+            <button class="checkout-btn" type="button">Checkout</button>
+          </div>
+        </aside>
+
+        <section class="benefits" aria-label="Our values">
+          <div class="benefit-item">
+            <div class="benefit-icon leaf">
+              <svg viewBox="0 0 100 100" aria-hidden="true"><path d="M24 63c18-25 40-39 63-42-1 21-14 43-35 57-12 9-21 15-28 17 0-12 4-20 0-32Z"></path></svg>
+            </div>
+            <strong>100% Natural</strong>
+            <span>No artificial additives</span>
+          </div>
+
+          <div class="benefit-item">
+            <div class="benefit-icon badge">
+              <svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 18l24 8v20c0 17-11 31-24 38-13-7-24-21-24-38V26l24-8Z"></path><path d="M38 50l8 8 16-18"></path></svg>
+            </div>
+            <strong>Quality Assured</strong>
+            <span>Safe &amp; healthy</span>
+          </div>
+
+          <div class="benefit-item">
+            <div class="benefit-icon people">
+              <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="34" cy="38" r="12"></circle><circle cx="66" cy="38" r="12"></circle><path d="M22 72c3-10 13-17 28-17s25 7 28 17"></path></svg>
+            </div>
+            <strong>Supports Local Farmers</strong>
+            <span>Stronger communities</span>
+          </div>
+
+          <div class="benefit-item">
+            <div class="benefit-icon eco">
+              <svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 18c12 13 20 24 20 39 0 15-9 25-20 25-11 0-20-10-20-25 0-15 8-26 20-39Zm0 13v41"></path></svg>
+            </div>
+            <strong>Sustainable Practices</strong>
+            <span>A healthier tomorrow</span>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      const cartButton = document.querySelector('.cart-button');
+      const cartPanel = document.getElementById('cart-panel');
+      const closeCartButton = document.querySelector('.close-cart');
+      const cartCount = document.querySelector('.cart-count');
+      const cartItems = document.getElementById('cart-items');
+      const subtotalEl = document.getElementById('subtotal');
+      const menuToggle = document.querySelector('.menu-toggle');
+      const mainNav = document.querySelector('.main-nav');
+      const cartStorageKey = 'maelowo-cart';
+
+      function loadCart() {
+        try {
+          const savedCart = JSON.parse(localStorage.getItem(cartStorageKey) || '[]');
+          if (!Array.isArray(savedCart)) return [];
+          return savedCart.filter((item) =>
+            item &&
+            typeof item.name === 'string' &&
+            Number.isFinite(item.price) &&
+            Number.isInteger(item.qty) &&
+            item.qty > 0
+          );
+        } catch (error) {
+          console.error('Unable to load the saved cart.', error);
+          return [];
+        }
+      }
+
+      const cart = loadCart();
+
+      function formatPrice(value) {
+        return `KSh ${Number(value).toLocaleString()}`;
+      }
+
+      function updateCart() {
+        const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+        const totalPrice = cart.reduce((sum, item) => sum + item.qty * item.price, 0);
+
+        cartCount.textContent = totalItems;
+        cartItems.innerHTML = '';
+        cartButton.setAttribute('aria-label', `Cart, ${totalItems} items, ${formatPrice(totalPrice)}`);
+
+        if (!cart.length) {
+          const emptyMessage = document.createElement('li');
+          const label = document.createElement('span');
+          label.textContent = 'Cart is empty';
+          emptyMessage.appendChild(label);
+          cartItems.appendChild(emptyMessage);
+        } else {
+          cart.forEach((item, index) => {
+            const li = document.createElement('li');
+            const name = document.createElement('span');
+            name.textContent = `${item.name} x${item.qty}`;
+
+            const price = document.createElement('strong');
+            price.textContent = formatPrice(item.qty * item.price);
+
+            const controls = document.createElement('div');
+            controls.className = 'cart-item-controls';
+
+            const decrease = document.createElement('button');
+            decrease.type = 'button';
+            decrease.textContent = '−';
+            decrease.setAttribute('aria-label', `Remove one ${item.name}`);
+            decrease.addEventListener('click', () => changeQuantity(index, -1));
+
+            const increase = document.createElement('button');
+            increase.type = 'button';
+            increase.textContent = '+';
+            increase.setAttribute('aria-label', `Add one ${item.name}`);
+            increase.addEventListener('click', () => changeQuantity(index, 1));
+
+            controls.append(decrease, increase);
+            li.append(name, price, controls);
+            cartItems.appendChild(li);
+          });
+        }
+
+        subtotalEl.textContent = formatPrice(totalPrice);
+        try {
+          localStorage.setItem(cartStorageKey, JSON.stringify(cart));
+        } catch (error) {
+          console.error('Unable to save the cart.', error);
+          cartPanel.classList.add('open');
+          cartItems.setAttribute('aria-label', 'Cart could not be saved to this browser');
+        }
+      }
+
+      function changeQuantity(index, adjustment) {
+        cart[index].qty += adjustment;
+        if (cart[index].qty <= 0) cart.splice(index, 1);
+        updateCart();
+      }
+
+      document.querySelectorAll('.buy-btn').forEach((button) => {
+        button.addEventListener('click', () => {
+          const product = button.closest('.product-card');
+          const name = product.dataset.name;
+          const price = Number(product.dataset.price);
+
+          const existing = cart.find((item) => item.name === name);
+          if (existing) {
+            existing.qty += 1;
+          } else {
+            cart.push({ name, price, qty: 1 });
+          }
+
+          updateCart();
+          cartPanel.classList.add('open');
+        });
+      });
+
+      cartButton.addEventListener('click', () => {
+        cartPanel.classList.toggle('open');
+      });
+
+      closeCartButton.addEventListener('click', () => {
+        cartPanel.classList.remove('open');
+      });
+
+      menuToggle.addEventListener('click', () => {
+        const isOpen = mainNav.classList.toggle('show');
+        menuToggle.setAttribute('aria-expanded', String(isOpen));
+      });
+
+      document.querySelector('.checkout-btn').addEventListener('click', () => {
+        if (!cart.length) {
+          cartPanel.classList.add('open');
+          return;
+        }
+
+        window.location.href = 'sign.html';
+      });
+
+      updateCart();
+    </script>
+  </body>
+</html>

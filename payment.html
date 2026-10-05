@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MaeLowo Foods | Payment</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="payment-body">
+    <div class="checkout-shell">
+      <header class="checkout-header">
+        <div class="brand-inline">
+          <img src="logo.jpeg" alt="MaeLowo Foods logo" />
+        </div>
+        <a href="index.html" class="back-link">Continue shopping</a>
+      </header>
+
+      <main class="checkout-grid">
+        <section class="checkout-panel payment-panel">
+          <div class="section-tag">Payment</div>
+          <h1>Complete your order</h1>
+
+          <form class="payment-form">
+            <div class="field">
+              <label for="full-name">Full name</label>
+              <input id="full-name" type="text" placeholder="Jane Doe" autocomplete="name" required />
+            </div>
+            <div class="field">
+              <label for="email-address">Email address</label>
+              <input id="email-address" type="email" placeholder="jane@example.com" autocomplete="email" required />
+            </div>
+
+            <input id="amount" type="hidden" value="0" />
+            <p class="payment-status" id="payment-status" role="status" aria-live="polite"></p>
+            <button class="primary auth-btn" id="payButton" type="submit">Pay KSh 0</button>
+          </form>
+        </section>
+
+        <aside class="checkout-panel summary-panel">
+          <div class="section-tag alt">Order summary</div>
+          <ul class="checkout-items" id="checkout-items"></ul>
+
+          <div class="summary-list">
+            <div class="summary-row"><span>Subtotal</span><strong id="checkout-subtotal">KSh 0</strong></div>
+            <div class="summary-row"><span>Delivery</span><strong>KSh 350</strong></div>
+            <div class="summary-row"><span>Tax (10.5%)</span><strong id="checkout-tax">KSh 0</strong></div>
+          </div>
+
+          <div class="summary-total">
+            <span>Total</span>
+            <strong id="checkout-total">KSh 0</strong>
+          </div>
+        </aside>
+      </main>
+    </div>
+
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const paymentForm = document.querySelector('.payment-form');
+        const payButton = document.getElementById('payButton');
+        const amountInput = document.getElementById('amount');
+        const emailInput = document.getElementById('email-address');
+        const customerNameInput = document.getElementById('full-name');
+        const status = document.getElementById('payment-status');
+        const checkoutItems = document.getElementById('checkout-items');
+        const subtotalElement = document.getElementById('checkout-subtotal');
+        const taxElement = document.getElementById('checkout-tax');
+        const totalElement = document.getElementById('checkout-total');
+        const deliveryFee = 350;
+        const taxRate = 0.105;
+        let paymentCompleted = false;
+
+        function formatPrice(value) {
+          return `KSh ${Number(value).toLocaleString()}`;
+        }
+
+        function readCart() {
+          try {
+            const savedCart = JSON.parse(localStorage.getItem('maelowo-cart') || '[]');
+            if (!Array.isArray(savedCart)) return [];
+            return savedCart.filter((item) =>
+              item &&
+              typeof item.name === 'string' &&
+              Number.isFinite(item.price) &&
+              Number.isInteger(item.qty) &&
+              item.qty > 0
+            );
+          } catch (error) {
+            console.error('Unable to read the saved cart for checkout.', error);
+            status.textContent = 'We could not load your cart. Return to the shop and try again.';
+            return [];
+          }
+        }
+
+        const cart = readCart();
+        const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+        const tax = Math.round(subtotal * taxRate);
+        const total = cart.length ? subtotal + tax + deliveryFee : 0;
+        amountInput.value = String(total);
+        subtotalElement.textContent = formatPrice(subtotal);
+        taxElement.textContent = formatPrice(tax);
+        totalElement.textContent = formatPrice(total);
+        payButton.textContent = `Pay ${formatPrice(total)}`;
+        payButton.disabled = cart.length === 0;
+
+        if (cart.length) {
+          cart.forEach((item) => {
+            const line = document.createElement('li');
+            const description = document.createElement('span');
+            description.textContent = `${item.name} × ${item.qty}`;
+            const linePrice = document.createElement('strong');
+            linePrice.textContent = formatPrice(item.price * item.qty);
+            line.append(description, linePrice);
+            checkoutItems.appendChild(line);
+          });
+        } else {
+          const emptyMessage = document.createElement('li');
+          emptyMessage.textContent = 'Your cart is empty. Return to the shop to add products.';
+          checkoutItems.appendChild(emptyMessage);
+          status.textContent = 'Your cart is empty. Return to the shop to add products before paying.';
+        }
+
+        paymentForm.addEventListener('submit', function(event) {
+          event.preventDefault();
+          if (!paymentForm.reportValidity()) return;
+
+          if (!cart.length) {
+            status.textContent = 'Your cart is empty. Return to the shop to add products before paying.';
+            return;
+          }
+
+          if (!window.PaystackPop) {
+            status.textContent = 'Payment could not start. Please check your connection and try again.';
+            return;
+          }
+
+          const amountInKSh = Number(amountInput.value);
+          if (!Number.isFinite(amountInKSh) || amountInKSh <= 0) {
+            status.textContent = 'The order total is invalid. Please return to your cart.';
+            return;
+          }
+
+          paymentCompleted = false;
+          status.textContent = '';
+          const handler = window.PaystackPop.setup({
+            key: 'pk_live_10a548b4501caa4b4971002a957f26bc43b11acb',
+            email: emailInput.value.trim(),
+            amount: Math.round(amountInKSh * 100),
+            currency: 'KES',
+            ref: 'MAELOWO_' + Date.now(),
+            label: 'MaeLowo Foods order',
+            metadata: {
+              custom_fields: [
+                {
+                  display_name: 'Customer name',
+                  variable_name: 'customer_name',
+                  value: customerNameInput.value.trim()
+                }
+              ]
+            },
+            callback: function(response) {
+              paymentCompleted = true;
+              status.textContent = 'Payment authorized. Reference: ' + response.reference + '.';
+              try {
+                localStorage.removeItem('maelowo-cart');
+              } catch (error) {
+                console.error('Unable to clear the cart after payment.', error);
+              }
+            },
+            onClose: function() {
+              if (!paymentCompleted) {
+                status.textContent = 'Payment was not completed. You can try again.';
+              }
+            }
+          });
+
+          handler.openIframe();
+        });
+      });
+    </script>
+  </body>
+</html>
