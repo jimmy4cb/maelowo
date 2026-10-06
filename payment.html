@@ -30,7 +30,7 @@
             </div>
             <div class="field">
               <label for="email-address">Email address</label>
-              <input id="email-address" type="email" placeholder="jane@example.com" autocomplete="email" required />
+              <input id="email-address" type="email" placeholder="jane@example.com" autocomplete="email" readonly required />
             </div>
 
             <input id="amount" type="hidden" value="0" />
@@ -114,6 +114,12 @@
           window.location.replace('sign.html?next=payment.html');
           return;
         }
+        if (!session.user.email) {
+          showMessage(status, 'Your signed-in account has no email address. Add one to your account before checkout.', true);
+          payButton.disabled = true;
+          return;
+        }
+        emailInput.value = session.user.email;
 
         try {
           const profile = await getProfile(session.user.id);
@@ -223,13 +229,28 @@
                 }
               ]
             },
-            callback: function(response) {
-              paymentCompleted = true;
-              status.textContent = 'Payment authorized. Reference: ' + response.reference + '.';
+            callback: async function(response) {
+              payButton.disabled = true;
+              status.textContent = 'Payment received. Verifying your order securely...';
               try {
+                const { data, error } = await supabase.functions.invoke('verify-paystack-payment', {
+                  body: {
+                    reference: response.reference,
+                    items: cart.map((item) => ({ id: item.id, qty: item.qty }))
+                  }
+                });
+                if (error) throw error;
+                if (!data?.verified || !data.orderId) {
+                  throw new Error('The payment provider could not confirm this order. Keep your payment reference and contact the store.');
+                }
                 localStorage.removeItem('maelowo-cart');
+                paymentCompleted = true;
+                status.textContent = `Payment verified. Order ${data.orderId} is confirmed. Reference: ${response.reference}.`;
               } catch (error) {
-                console.error('Unable to clear the cart after payment.', error);
+                console.error('Payment succeeded but server-side order verification failed.', error);
+                status.textContent = `Payment was received, but order confirmation is still pending. Keep reference ${response.reference} and contact the store. ${error.message || ''}`;
+              } finally {
+                payButton.disabled = false;
               }
             },
             onClose: function() {

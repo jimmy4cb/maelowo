@@ -34,6 +34,21 @@ create table if not exists public.referrals (
   unique (user_id, friend_email)
 );
 
+create table if not exists public.orders (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references public.profiles (id) on delete restrict,
+  provider_reference text not null unique,
+  customer_email text not null,
+  currency text not null check (currency = 'KES'),
+  items jsonb not null check (jsonb_typeof(items) = 'array'),
+  subtotal numeric(12, 2) not null check (subtotal >= 0),
+  delivery_fee numeric(12, 2) not null check (delivery_fee >= 0),
+  tax numeric(12, 2) not null check (tax >= 0),
+  total numeric(12, 2) not null check (total > 0),
+  payment_status text not null check (payment_status in ('paid')),
+  created_at timestamptz not null default now()
+);
+
 create or replace function public.create_client_profile()
 returns trigger
 language plpgsql
@@ -60,6 +75,7 @@ alter table public.profiles enable row level security;
 alter table public.products enable row level security;
 alter table public.service_reviews enable row level security;
 alter table public.referrals enable row level security;
+alter table public.orders enable row level security;
 
 create or replace function public.is_admin()
 returns boolean
@@ -142,12 +158,18 @@ create policy "Clients can create their referrals"
   on public.referrals for insert to authenticated
   with check (user_id = (select auth.uid()));
 
+drop policy if exists "Clients can view their own orders" on public.orders;
+create policy "Clients can view their own orders"
+  on public.orders for select to authenticated
+  using (user_id = (select auth.uid()) or (select public.is_admin()));
+
 grant select on public.products to anon, authenticated;
 grant insert, update, delete on public.products to authenticated;
 grant select, insert, update, delete on public.service_reviews to authenticated;
 grant select on public.service_reviews to anon;
 grant select, insert on public.referrals to authenticated;
 grant select, update on public.profiles to authenticated;
+grant select on public.orders to authenticated;
 
 insert into public.products (name, description, price, image_url)
 select seed.name, seed.description, seed.price, seed.image_url

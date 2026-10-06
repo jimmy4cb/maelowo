@@ -1,7 +1,7 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
-const supabaseUrl = 'https://vqxnazmaokbobtnxatjk.supabase.co';
-const supabaseAnonKey = 'sb_publishable_ZA1mqUfr-BctVKYsbziueg_oZ2W6SA7';
+const supabaseUrl = 'https://sxyyrtuweixwdthgrvcd.supabase.co';
+const supabaseAnonKey = 'sb_publishable_2sCyRj8ZZk0fxo1vHB5rEQ_Jb6uOIYG';
 
 export const isSupabaseConfigured =
   supabaseUrl.startsWith('https://') &&
