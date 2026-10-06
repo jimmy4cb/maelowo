@@ -41,7 +41,7 @@
       </header>
 
       <main class="content">
-        <section class="hero">
+        <section class="hero" id="about">
           <div class="hero-copy">
             <div class="micro-tags">
               <span>QUALITY FOOD</span>
@@ -161,6 +161,7 @@
               <button class="buy-btn" type="button">Add to cart</button>
             </article>
           </div>
+          <p class="catalog-message" id="catalog-message" role="status" hidden></p>
         </section>
 
         <aside class="cart-panel" id="cart-panel" aria-live="polite">
@@ -175,7 +176,7 @@
           </div>
         </aside>
 
-        <section class="benefits" aria-label="Our values">
+        <section class="benefits" id="impact" aria-label="Our values">
           <div class="benefit-item">
             <div class="benefit-icon leaf">
               <svg viewBox="0 0 100 100" aria-hidden="true"><path d="M24 63c18-25 40-39 63-42-1 21-14 43-35 57-12 9-21 15-28 17 0-12 4-20 0-32Z"></path></svg>
@@ -208,144 +209,14 @@
             <span>A healthier tomorrow</span>
           </div>
         </section>
+        <footer class="store-footer" id="contact">
+          <span>Questions about an order?</span>
+          <a href="mailto:owinocliff328@gmail.com">Contact MaeLowo Foods</a>
+          <a href="sign.html">Client / Admin sign in</a>
+        </footer>
       </main>
     </div>
 
-    <script>
-      const cartButton = document.querySelector('.cart-button');
-      const cartPanel = document.getElementById('cart-panel');
-      const closeCartButton = document.querySelector('.close-cart');
-      const cartCount = document.querySelector('.cart-count');
-      const cartItems = document.getElementById('cart-items');
-      const subtotalEl = document.getElementById('subtotal');
-      const menuToggle = document.querySelector('.menu-toggle');
-      const mainNav = document.querySelector('.main-nav');
-      const cartStorageKey = 'maelowo-cart';
-
-      function loadCart() {
-        try {
-          const savedCart = JSON.parse(localStorage.getItem(cartStorageKey) || '[]');
-          if (!Array.isArray(savedCart)) return [];
-          return savedCart.filter((item) =>
-            item &&
-            typeof item.name === 'string' &&
-            Number.isFinite(item.price) &&
-            Number.isInteger(item.qty) &&
-            item.qty > 0
-          );
-        } catch (error) {
-          console.error('Unable to load the saved cart.', error);
-          return [];
-        }
-      }
-
-      const cart = loadCart();
-
-      function formatPrice(value) {
-        return `KSh ${Number(value).toLocaleString()}`;
-      }
-
-      function updateCart() {
-        const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
-        const totalPrice = cart.reduce((sum, item) => sum + item.qty * item.price, 0);
-
-        cartCount.textContent = totalItems;
-        cartItems.innerHTML = '';
-        cartButton.setAttribute('aria-label', `Cart, ${totalItems} items, ${formatPrice(totalPrice)}`);
-
-        if (!cart.length) {
-          const emptyMessage = document.createElement('li');
-          const label = document.createElement('span');
-          label.textContent = 'Cart is empty';
-          emptyMessage.appendChild(label);
-          cartItems.appendChild(emptyMessage);
-        } else {
-          cart.forEach((item, index) => {
-            const li = document.createElement('li');
-            const name = document.createElement('span');
-            name.textContent = `${item.name} x${item.qty}`;
-
-            const price = document.createElement('strong');
-            price.textContent = formatPrice(item.qty * item.price);
-
-            const controls = document.createElement('div');
-            controls.className = 'cart-item-controls';
-
-            const decrease = document.createElement('button');
-            decrease.type = 'button';
-            decrease.textContent = '−';
-            decrease.setAttribute('aria-label', `Remove one ${item.name}`);
-            decrease.addEventListener('click', () => changeQuantity(index, -1));
-
-            const increase = document.createElement('button');
-            increase.type = 'button';
-            increase.textContent = '+';
-            increase.setAttribute('aria-label', `Add one ${item.name}`);
-            increase.addEventListener('click', () => changeQuantity(index, 1));
-
-            controls.append(decrease, increase);
-            li.append(name, price, controls);
-            cartItems.appendChild(li);
-          });
-        }
-
-        subtotalEl.textContent = formatPrice(totalPrice);
-        try {
-          localStorage.setItem(cartStorageKey, JSON.stringify(cart));
-        } catch (error) {
-          console.error('Unable to save the cart.', error);
-          cartPanel.classList.add('open');
-          cartItems.setAttribute('aria-label', 'Cart could not be saved to this browser');
-        }
-      }
-
-      function changeQuantity(index, adjustment) {
-        cart[index].qty += adjustment;
-        if (cart[index].qty <= 0) cart.splice(index, 1);
-        updateCart();
-      }
-
-      document.querySelectorAll('.buy-btn').forEach((button) => {
-        button.addEventListener('click', () => {
-          const product = button.closest('.product-card');
-          const name = product.dataset.name;
-          const price = Number(product.dataset.price);
-
-          const existing = cart.find((item) => item.name === name);
-          if (existing) {
-            existing.qty += 1;
-          } else {
-            cart.push({ name, price, qty: 1 });
-          }
-
-          updateCart();
-          cartPanel.classList.add('open');
-        });
-      });
-
-      cartButton.addEventListener('click', () => {
-        cartPanel.classList.toggle('open');
-      });
-
-      closeCartButton.addEventListener('click', () => {
-        cartPanel.classList.remove('open');
-      });
-
-      menuToggle.addEventListener('click', () => {
-        const isOpen = mainNav.classList.toggle('show');
-        menuToggle.setAttribute('aria-expanded', String(isOpen));
-      });
-
-      document.querySelector('.checkout-btn').addEventListener('click', () => {
-        if (!cart.length) {
-          cartPanel.classList.add('open');
-          return;
-        }
-
-        window.location.href = 'sign.html';
-      });
-
-      updateCart();
-    </script>
+    <script type="module" src="storefront.js"></script>
   </body>
 </html>

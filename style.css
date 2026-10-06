@@ -208,6 +208,7 @@ svg {
   border-radius: 999px;
   background: var(--green);
   color: #f5f7f3;
+  text-decoration: none;
   font-weight: 700;
   font-size: 1.05rem;
   padding: 0.9rem 1.5rem;
@@ -1054,6 +1055,296 @@ svg {
   color: var(--green);
 }
 
+.text-button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--green);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 20px 0 12px;
+  color: rgba(29, 79, 61, 0.65);
+  font-size: 0.88rem;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: rgba(45, 109, 88, 0.15);
+}
+
+.google-btn,
+.outline-button,
+.danger-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0.65rem 1rem;
+  border: 1px solid rgba(45, 109, 88, 0.18);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--green-deep);
+  font: inherit;
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.google-btn {
+  width: 100%;
+}
+
+.google-btn svg {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+}
+
+.auth-message,
+.portal-message,
+.catalog-message {
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(45, 109, 88, 0.08);
+  color: var(--green-deep);
+  font-weight: 700;
+}
+
+.auth-message.error,
+.portal-message.error,
+.catalog-message.error {
+  background: rgba(177, 55, 40, 0.08);
+  color: #9f2f24;
+}
+
+.auth-message:not([hidden]),
+.portal-message:not([hidden]),
+.catalog-message:not([hidden]) {
+  margin-top: 14px;
+}
+
+.auth-message[hidden],
+.portal-message[hidden],
+.catalog-message[hidden] {
+  display: none;
+}
+
+.portal-body {
+  min-height: 100vh;
+  padding: 24px 0;
+  background: linear-gradient(135deg, rgba(45, 109, 88, 0.05), rgba(242, 140, 45, 0.05));
+}
+
+.portal-shell {
+  width: min(1160px, calc(100% - 32px));
+  margin: 0 auto;
+}
+
+.portal-header,
+.portal-user {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.portal-logo {
+  display: block;
+  width: min(230px, 48vw);
+}
+
+.portal-logo img {
+  display: block;
+  width: 100%;
+}
+
+.portal-user {
+  color: var(--green);
+  font-weight: 800;
+}
+
+.portal-intro {
+  padding: 44px 0 24px;
+}
+
+.portal-intro h1 {
+  margin: 0 0 8px;
+  color: var(--green);
+  font-family: "Baloo 2", "Arial Rounded MT Bold", sans-serif;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  line-height: 1;
+  letter-spacing: -0.06em;
+}
+
+.portal-intro p,
+.portal-card > p {
+  color: rgba(29, 79, 61, 0.72);
+}
+
+.portal-grid,
+.admin-layout {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  align-items: start;
+}
+
+.portal-card {
+  padding: 24px;
+  border: 1px solid rgba(45, 109, 88, 0.1);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow: 0 16px 32px rgba(23, 49, 37, 0.05);
+}
+
+.portal-card h2 {
+  margin-bottom: 4px;
+  color: var(--green);
+  font-family: "Baloo 2", "Arial Rounded MT Bold", sans-serif;
+  font-size: 2rem;
+  letter-spacing: -0.04em;
+}
+
+.portal-form {
+  display: grid;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.portal-form textarea,
+.portal-form select {
+  width: 100%;
+  border: 1px solid rgba(45, 109, 88, 0.15);
+  border-radius: 14px;
+  background: #fff;
+  color: var(--green-deep);
+  padding: 0.9rem 1rem;
+  font: inherit;
+  resize: vertical;
+}
+
+.product-active {
+  margin: 2px 0;
+}
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.form-actions .auth-btn {
+  flex: 1;
+}
+
+.portal-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.portal-list h3 {
+  color: var(--green);
+  font-size: 1rem;
+}
+
+.portal-entry {
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(45, 109, 88, 0.05);
+  color: var(--green-deep);
+}
+
+.portal-entry p {
+  margin: 4px 0;
+  white-space: pre-wrap;
+}
+
+.portal-entry small {
+  color: rgba(29, 79, 61, 0.65);
+}
+
+.portal-global-message {
+  margin-top: 18px;
+}
+
+.admin-product-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.admin-product {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 14px;
+  border: 1px solid rgba(45, 109, 88, 0.1);
+  border-radius: 14px;
+  background: rgba(45, 109, 88, 0.025);
+}
+
+.admin-product-details h3 {
+  margin-bottom: 2px;
+  color: var(--green);
+}
+
+.admin-product-details p {
+  color: var(--green-deep);
+}
+
+.admin-product-details small {
+  color: rgba(29, 79, 61, 0.65);
+}
+
+.admin-product-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.danger-button {
+  border-color: rgba(159, 47, 36, 0.2);
+  color: #9f2f24;
+}
+
+.catalog-product-image {
+  width: 100%;
+  max-height: 220px;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 14px;
+  margin-bottom: 14px;
+}
+
+.store-footer {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px 22px;
+  margin: 40px 0 14px;
+  padding: 22px;
+  border-top: 1px solid var(--line);
+  color: var(--green-deep);
+}
+
+.store-footer a {
+  color: var(--green);
+  font-weight: 800;
+  text-decoration: none;
+}
+
 @media (max-width: 1120px) {
   .page-shell {
     width: min(100% - 20px, 1200px);
@@ -1206,7 +1497,9 @@ svg {
   }
 
   .auth-card,
-  .checkout-grid {
+  .checkout-grid,
+  .portal-grid,
+  .admin-layout {
     grid-template-columns: 1fr;
   }
 
@@ -1218,5 +1511,31 @@ svg {
   .payment-methods,
   .field-grid {
     grid-template-columns: 1fr;
+  }
+
+  .portal-header,
+  .portal-user {
+    gap: 10px;
+  }
+
+  .portal-user {
+    font-size: 0.85rem;
+  }
+
+  .portal-card {
+    padding: 18px;
+  }
+
+  .admin-product {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .admin-product-actions {
+    width: 100%;
+  }
+
+  .admin-product-actions button {
+    flex: 1;
   }
 }

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MaeLowo Foods | Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="portal-body">
+    <main class="portal-shell">
+      <header class="portal-header">
+        <a href="index.html" class="portal-logo"><img src="logo.jpeg" alt="MaeLowo Foods home" /></a>
+        <div class="portal-user">
+          <span id="admin-name">Admin</span>
+          <button class="outline-button" id="sign-out" type="button">Sign out</button>
+        </div>
+      </header>
+
+      <section class="portal-intro">
+        <span class="section-tag">Admin portal</span>
+        <h1>Manage the product catalog.</h1>
+        <p>Updates here are saved to the shared storefront catalog.</p>
+      </section>
+
+      <div class="admin-layout">
+        <section class="portal-card">
+          <h2 id="product-form-title">Add a product</h2>
+          <form id="product-form" class="portal-form">
+            <input id="product-id" type="hidden" />
+            <div class="field">
+              <label for="product-name">Product name</label>
+              <input id="product-name" type="text" maxlength="120" required />
+            </div>
+            <div class="field">
+              <label for="product-description">Description</label>
+              <textarea id="product-description" rows="3" maxlength="1000"></textarea>
+            </div>
+            <div class="field">
+              <label for="product-price">Price (KSh)</label>
+              <input id="product-price" type="number" min="0" step="1" required />
+            </div>
+            <div class="field">
+              <label for="product-image">Image URL or local path</label>
+              <input id="product-image" type="text" maxlength="500" placeholder="assets/images/product-grid.jpeg" />
+            </div>
+            <label class="checkbox-row product-active"><input id="product-active" type="checkbox" checked /> <span>Visible in storefront</span></label>
+            <div class="form-actions">
+              <button class="primary auth-btn" type="submit" id="save-product">Save product</button>
+              <button class="outline-button" type="reset" id="cancel-edit" hidden>Cancel edit</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="portal-card">
+          <h2>Products</h2>
+          <p>Edit details or hide a product from the storefront.</p>
+          <div class="catalog-message" id="admin-message" role="status" aria-live="polite" hidden></div>
+          <div class="admin-product-list" id="admin-product-list"></div>
+        </section>
+      </div>
+    </main>
+    <script type="module" src="admin.js"></script>
+  </body>
+</html>

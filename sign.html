@@ -26,15 +26,15 @@
           <form class="auth-form active" id="login-form">
             <div class="field">
               <label for="login-email">Email or phone</label>
-              <input id="login-email" type="text" placeholder="you@example.com" />
+              <input id="login-email" type="email" placeholder="you@example.com" autocomplete="email" required />
             </div>
             <div class="field">
               <label for="login-password">Password</label>
-              <input id="login-password" type="password" placeholder="••••••••" />
+              <input id="login-password" type="password" placeholder="••••••••" autocomplete="current-password" required />
             </div>
             <div class="helper-row">
               <label class="checkbox-row"><input type="checkbox" checked /> <span>Remember me</span></label>
-              <a href="#">Forgot password?</a>
+              <button class="text-button" id="forgot-password" type="button">Forgot password?</button>
             </div>
             <button class="primary auth-btn" type="submit">Sign in</button>
           </form>
@@ -43,36 +43,73 @@
             <div class="field-grid">
               <div class="field">
                 <label for="first-name">First name</label>
-                <input id="first-name" type="text" placeholder="Jane" />
+                <input id="first-name" type="text" placeholder="Jane" autocomplete="given-name" required />
               </div>
               <div class="field">
                 <label for="last-name">Last name</label>
-                <input id="last-name" type="text" placeholder="Doe" />
+                <input id="last-name" type="text" placeholder="Doe" autocomplete="family-name" required />
               </div>
             </div>
             <div class="field">
               <label for="signup-email">Email</label>
-              <input id="signup-email" type="email" placeholder="you@example.com" />
+              <input id="signup-email" type="email" placeholder="you@example.com" autocomplete="email" required />
             </div>
             <div class="field">
               <label for="signup-phone">Phone</label>
-              <input id="signup-phone" type="tel" placeholder="+254 7xx xxx xxx" />
+              <input id="signup-phone" type="tel" placeholder="+254 7xx xxx xxx" autocomplete="tel" />
             </div>
             <div class="field">
               <label for="signup-password">Password</label>
-              <input id="signup-password" type="password" placeholder="Create a password" />
+              <input id="signup-password" type="password" placeholder="At least 8 characters" autocomplete="new-password" minlength="8" required />
             </div>
             <button class="primary auth-btn" type="submit">Create account</button>
           </form>
 
+          <div class="auth-divider"><span>or continue with</span></div>
+          <button class="google-btn" id="google-sign-in" type="button">
+            <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#4285F4" d="M43.6 24.5c0-1.4-.1-2.8-.4-4.1H24v7.8h11a9.4 9.4 0 0 1-4.1 6.2v5.1h6.6c3.9-3.6 6.1-8.8 6.1-15Z"/><path fill="#34A853" d="M24 44c5.5 0 10.1-1.8 13.5-4.9l-6.6-5.1c-1.8 1.2-4.1 2-6.9 2-5.3 0-9.8-3.6-11.4-8.4H5.8v5.3A20 20 0 0 0 24 44Z"/><path fill="#FBBC05" d="M12.6 27.6a12 12 0 0 1 0-7.2v-5.3H5.8a20 20 0 0 0 0 17.8l6.8-5.3Z"/><path fill="#EA4335" d="M24 12c3 0 5.7 1 7.8 3.1l5.8-5.8A19.4 19.4 0 0 0 24 4 20 20 0 0 0 5.8 15.1l6.8 5.3C14.2 15.6 18.7 12 24 12Z"/></svg>
+            Continue with Google
+          </button>
+          <p class="auth-message" id="auth-message" role="status" aria-live="polite" hidden></p>
           <p class="auth-footer">Need help? <a href="index.html">Return home</a></p>
         </div>
       </div>
     </div>
 
-    <script>
+    <script type="module">
+      import { getProfile, isSupabaseConfigured, showMessage, supabase } from './supabase-client.js';
+
       const tabButtons = document.querySelectorAll('.tab-btn');
       const forms = document.querySelectorAll('.auth-form');
+      const message = document.getElementById('auth-message');
+      const submitButtons = document.querySelectorAll('.auth-btn');
+
+      async function routeUser(user) {
+        const profile = await getProfile(user.id);
+        const nextPage = new URLSearchParams(window.location.search).get('next');
+        const clientDestination = nextPage === 'payment.html' ? 'payment.html' : 'account.html';
+        window.location.replace(profile.role === 'admin' ? 'admin.html' : clientDestination);
+      }
+
+      const signInRedirect = window.location.origin + '/sign.html' + window.location.search;
+
+      function ensureSupabase() {
+        if (isSupabaseConfigured) return true;
+        showMessage(message, 'Sign-in is not configured yet. Follow SUPABASE_SETUP.md to connect this site.', true);
+        return false;
+      }
+
+      if (!isSupabaseConfigured) {
+        showMessage(message, 'Connect this site to Supabase to enable secure client and admin sign-in.', true);
+      } else {
+        supabase.auth.getSession().then(({ data, error }) => {
+          if (error) {
+            showMessage(message, error.message, true);
+            return;
+          }
+          if (data.session) routeUser(data.session.user).catch((profileError) => showMessage(message, profileError.message, true));
+        });
+      }
 
       tabButtons.forEach((button) => {
         button.addEventListener('click', () => {
@@ -84,11 +121,84 @@
         });
       });
 
-      document.querySelectorAll('.auth-form').forEach((form) => {
-        form.addEventListener('submit', (event) => {
-          event.preventDefault();
-          window.location.href = 'payment.html';
-        });
+      document.getElementById('login-form').addEventListener('submit', async (event) => {
+        event.preventDefault();
+        if (!ensureSupabase()) return;
+        const button = event.currentTarget.querySelector('[type="submit"]');
+        button.disabled = true;
+        showMessage(message, '');
+        try {
+          const { data, error } = await supabase.auth.signInWithPassword({
+            email: document.getElementById('login-email').value.trim(),
+            password: document.getElementById('login-password').value
+          });
+          if (error) throw error;
+          await routeUser(data.user);
+        } catch (error) {
+          showMessage(message, error.message || 'Sign-in failed. Try again.', true);
+        } finally {
+          button.disabled = false;
+        }
+      });
+
+      document.getElementById('signup-form').addEventListener('submit', async (event) => {
+        event.preventDefault();
+        if (!ensureSupabase()) return;
+        const button = event.currentTarget.querySelector('[type="submit"]');
+        button.disabled = true;
+        showMessage(message, '');
+        const fullName = `${document.getElementById('first-name').value.trim()} ${document.getElementById('last-name').value.trim()}`.trim();
+        try {
+          const { data, error } = await supabase.auth.signUp({
+            email: document.getElementById('signup-email').value.trim(),
+            password: document.getElementById('signup-password').value,
+            options: {
+              data: { full_name: fullName },
+              emailRedirectTo: signInRedirect
+            }
+          });
+          if (error) throw error;
+          if (data.session) {
+            await routeUser(data.user);
+          } else {
+            showMessage(message, 'Account created. Check your email for the verification link, then sign in.');
+          }
+        } catch (error) {
+          showMessage(message, error.message || 'Account creation failed. Try again.', true);
+        } finally {
+          button.disabled = false;
+        }
+      });
+
+      document.getElementById('google-sign-in').addEventListener('click', async () => {
+        if (!ensureSupabase()) return;
+        try {
+          const { error } = await supabase.auth.signInWithOAuth({
+            provider: 'google',
+            options: { redirectTo: signInRedirect }
+          });
+          if (error) throw error;
+        } catch (error) {
+          showMessage(message, error.message || 'Google sign-in failed. Try again.', true);
+        }
+      });
+
+      document.getElementById('forgot-password').addEventListener('click', async () => {
+        if (!ensureSupabase()) return;
+        const email = document.getElementById('login-email').value.trim();
+        if (!email) {
+          showMessage(message, 'Enter your email address first so we can send a reset link.', true);
+          return;
+        }
+        try {
+          const { error } = await supabase.auth.resetPasswordForEmail(email, {
+            redirectTo: window.location.origin + '/sign.html'
+          });
+          if (error) throw error;
+          showMessage(message, 'If that account exists, a password reset link has been sent.');
+        } catch (error) {
+          showMessage(message, error.message || 'Could not send the reset email.', true);
+        }
       });
     </script>
   </body>

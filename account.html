@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MaeLowo Foods | My Account</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="portal-body">
+    <main class="portal-shell">
+      <header class="portal-header">
+        <a href="index.html" class="portal-logo"><img src="logo.jpeg" alt="MaeLowo Foods home" /></a>
+        <div class="portal-user">
+          <span id="client-name">My account</span>
+          <button class="outline-button" id="sign-out" type="button">Sign out</button>
+        </div>
+      </header>
+
+      <section class="portal-intro">
+        <span class="section-tag">Client account</span>
+        <h1>Good food, good community.</h1>
+        <p>Share your experience and help a friend discover MaeLowo Foods.</p>
+      </section>
+
+      <div class="portal-grid">
+        <section class="portal-card">
+          <h2>Rate our service</h2>
+          <p>Tell us about your MaeLowo experience.</p>
+          <form id="review-form" class="portal-form">
+            <div class="field">
+              <label for="rating">Your rating</label>
+              <select id="rating" required>
+                <option value="">Choose a rating</option>
+                <option value="5">5 — Excellent</option>
+                <option value="4">4 — Very good</option>
+                <option value="3">3 — Good</option>
+                <option value="2">2 — Fair</option>
+                <option value="1">1 — Needs improvement</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="review">Review</label>
+              <textarea id="review" rows="4" minlength="5" maxlength="2000" required placeholder="How was our product and service?"></textarea>
+            </div>
+            <button class="primary auth-btn" type="submit">Submit review</button>
+          </form>
+          <p class="portal-message" id="review-message" role="status" aria-live="polite" hidden></p>
+          <div class="portal-list" id="my-reviews"></div>
+        </section>
+
+        <section class="portal-card">
+          <h2>Refer a friend</h2>
+          <p>Invite someone to discover wholesome local food.</p>
+          <form id="referral-form" class="portal-form">
+            <div class="field">
+              <label for="friend-name">Friend's name</label>
+              <input id="friend-name" type="text" maxlength="120" required />
+            </div>
+            <div class="field">
+              <label for="friend-email">Friend's email</label>
+              <input id="friend-email" type="email" required />
+            </div>
+            <div class="field">
+              <label for="referral-message">Personal note (optional)</label>
+              <textarea id="referral-message" rows="3" maxlength="500" placeholder="I thought you might like MaeLowo Foods."></textarea>
+            </div>
+            <button class="primary auth-btn" type="submit">Save referral</button>
+          </form>
+          <p class="portal-message" id="referral-message-status" role="status" aria-live="polite" hidden></p>
+          <div class="portal-list" id="my-referrals"></div>
+        </section>
+      </div>
+      <p class="portal-message portal-global-message" id="portal-message" role="status" aria-live="polite" hidden></p>
+    </main>
+    <script type="module" src="account.js"></script>
+  </body>
+</html>

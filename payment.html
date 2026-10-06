@@ -58,8 +58,10 @@
     </div>
 
     <script src="https://js.paystack.co/v1/inline.js"></script>
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
+    <script type="module">
+      import { getProfile, isSupabaseConfigured, showMessage, supabase } from './supabase-client.js';
+
+      document.addEventListener('DOMContentLoaded', async function() {
         const paymentForm = document.querySelector('.payment-form');
         const payButton = document.getElementById('payButton');
         const amountInput = document.getElementById('amount');
@@ -96,7 +98,66 @@
           }
         }
 
-        const cart = readCart();
+        if (!isSupabaseConfigured) {
+          showMessage(status, 'Checkout requires Supabase configuration. See SUPABASE_SETUP.md.', true);
+          payButton.disabled = true;
+          return;
+        }
+
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        if (sessionError) {
+          showMessage(status, sessionError.message, true);
+          payButton.disabled = true;
+          return;
+        }
+        if (!session) {
+          window.location.replace('sign.html?next=payment.html');
+          return;
+        }
+
+        try {
+          const profile = await getProfile(session.user.id);
+          if (profile.role === 'admin') {
+            showMessage(status, 'Admin accounts cannot place customer orders. Sign in with a client account.', true);
+            payButton.disabled = true;
+            return;
+          }
+        } catch (error) {
+          showMessage(status, error.message || 'Could not verify your client account.', true);
+          payButton.disabled = true;
+          return;
+        }
+
+        let cart = readCart();
+        if (cart.length) {
+          try {
+            const { data: products, error } = await supabase
+              .from('products')
+              .select('id, name, price, active')
+              .eq('active', true);
+            if (error) throw error;
+
+            const verifiedCart = cart.map((item) => {
+              const product = products.find((entry) => entry.id === item.id) ||
+                products.find((entry) => entry.name === item.name);
+              if (!product) return null;
+              return { id: product.id, name: product.name, price: Number(product.price), qty: item.qty };
+            });
+            if (verifiedCart.some((item) => item === null)) {
+              showMessage(status, 'One or more cart products are no longer available. Return to the shop and update your cart.', true);
+              payButton.disabled = true;
+              return;
+            }
+            cart = verifiedCart;
+            localStorage.setItem('maelowo-cart', JSON.stringify(cart));
+          } catch (error) {
+            console.error('Unable to verify checkout products.', error);
+            showMessage(status, 'We could not verify current product prices. Return to the shop and try again.', true);
+            payButton.disabled = true;
+            return;
+          }
+        }
+
         const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
         const tax = Math.round(subtotal * taxRate);
         const total = cart.length ? subtotal + tax + deliveryFee : 0;
